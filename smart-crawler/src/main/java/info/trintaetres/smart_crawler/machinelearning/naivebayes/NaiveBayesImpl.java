@@ -44,12 +44,15 @@ public class NaiveBayesImpl  implements Serializable {
 	
 	public void train(List<LabeledPoint> trainList, List<LabeledPoint> testList) {
 
-		SparkConf conf = new SparkConf().setAppName("SVM Classifier")
-				.setMaster("spark://luiz-System-Product-Name:7077")
-				.setJars(new String[]{"target/smart-crawler-0.0.1-SNAPSHOT.jar"})
-				.set("spark.akka.frameSize", "40");
-		
-		JavaSparkContext sc = new JavaSparkContext(conf);
+		conf = new SparkConf()
+				.setAppName("SVM Classifier")
+				.setMaster("spark://192.168.56.1:7077")
+				.setJars(
+						new String[] { "/Users/Luiz/git/smart-crawler4/smart-crawler/target/smart-crawler-0.0.1-SNAPSHOT.jar" })
+				.set("spark.akka.frameSize", "20");
+				//.set("spark.akka.heartbeat.interval", "1000");
+
+		sc = new JavaSparkContext(conf);
 
 		JavaRDD<LabeledPoint> training = sc.parallelize(trainList, 2).cache();
 		JavaRDD<LabeledPoint> test = sc.parallelize(testList, 2).cache();
